@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GoogleEnterpriseSources xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+  <onebox type="external">
+
+    <name>directory_onebox</name>
+
+    <description>This is a sample OneBox module that queries for directory information.  Be sure to deploy the onebox.war web application archive file and appropriately update the providerURL of this module before installing the module.</description>
+
+    <security userAuth="none"/>
+    <!-- <security userAuth="basic"/> -->
+    <!-- <security userAuth="basic">
+           <GSA_username>gsaUser</GSA_username>
+           <GSA_password>gsaPassword</GSA_password>
+         </security> -->
+    <!-- <security userAuth="ldap"/> -->
+    <!-- <security userAuth="ldap">
+           <GSA_username>gsaUser</GSA_username>
+           <GSA_password>gsaPassword</GSA_password>
+         </security> -->
+    <!-- <security userAuth="sso"/> -->
+    <!-- <security userAuth="sso">
+           <GSA_username>gsaUser</GSA_username>
+           <GSA_password>gsaPassword</GSA_password>
+         </security> -->
+
+    <trigger triggerType="keyword">directory|dir|contact|phone</trigger>
+
+    <providerURL>http://localhost:8080/onebox/SampleNoAuthOneBoxProvider</providerURL>
+    <!-- <providerURL>http://localhost:8080/onebox/SampleBasicAuthOneBoxProvider</providerURL> -->
+    <!-- <providerURL>http://localhost:8080/onebox/SampleLDAPAuthOneBoxProvider</providerURL> -->
+    <!-- <providerURL>http://localhost:8080/onebox/SampleSSOAuthOneBoxProvider</providerURL> -->
+
+    <resultsTemplate>
+      <xsl:template name="directory_results">
+        <table border="0" cellpadding="1" cellspacing="0">
+          <tbody>
+            <tr>
+              <td rowspan="2" valign="top">
+                <img width="40" height="40">
+                  <xsl:attribute name="src"><xsl:value-of select="IMAGE_SOURCE"/></xsl:attribute>
+                </img>
+              </td>
+              <td>
+                <a>
+                  <xsl:attribute name="href"><xsl:value-of select="title/urlLink"/></xsl:attribute>
+                  <b><xsl:value-of select="title/urlText"/></b>
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <table>
+                <xsl:for-each select="MODULE_RESULT">
+                  <tr>
+                    <td width="200" valign="top">
+                      <a>
+                          <xsl:attribute name="href"><xsl:value-of select="U"/></xsl:attribute>
+                          <font size="-1"><b><xsl:value-of select="Title"/></b></font>
+                      </a><br/>
+                      <b>
+                        <font size="-1"><xsl:value-of select="Field[@name='position']"/> -- 
+                                        <xsl:value-of select="Field[@name='department']"/></font>
+                      </b>
+                    </td>
+                    <td width="200" valign="top">
+                      <xsl:if test="Field[@name='phone']">
+                      <font size="-1"><xsl:value-of select="Field[@name='phone']"/></font><br/>
+                      </xsl:if>
+                      <xsl:if test="Field[@name='email']">
+                      <a>
+                        <xsl:attribute name="href">mailto:<xsl:value-of select="Field[@name='email']"/></xsl:attribute>
+                        <font size="-1"><xsl:value-of select="Field[@name='email']"/></font>
+                      </a><br/>
+                      </xsl:if>
+                    </td>
+                    <td width="200" valign="top">
+                      <xsl:if test="Field[@name='building']">
+                      <font size="-1"><i>Bldg: </i>  <xsl:value-of select="Field[@name='building']"/></font><br/>
+                      </xsl:if>
+                      <xsl:if test="Field[@name='office']">
+                      <font size="-1"><i>Office: </i>  <xsl:value-of select="Field[@name='office']"/></font><br/>
+                      </xsl:if>
+                    </td>
+                  </tr>
+                </xsl:for-each>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </xsl:template>
+    </resultsTemplate>
+
+  </onebox>
+
+</GoogleEnterpriseSources>
+
+

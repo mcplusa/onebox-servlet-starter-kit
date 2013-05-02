@@ -1,0 +1,159 @@
+<html>
+<head>
+<title>README</title>
+</head>
+<body>
+
+<h3>README - <i>OneBox Servlet Starter Kit</i></h3>
+
+<p>
+The <i>OneBox Servlet Starter Kit</i> provides the simple infrastructure and code to transform the Google OneBox for Enterprise API into a Java servlet based API.
+</p>
+<p>
+You can immediately deploy a sample OneBox module based in J2EE servlet technology by using the given OneBox provider servlets and deployable web application archive (WAR). 
+</p>
+<p>
+The source code, Javadoc, and build scripts are included, so by using one of the sample servlets as a starting point, you only need to modify the Java source code to customize the behavior of your OneBox.  The WAR file can then be regenerated and redeployed to your application server, and your OneBox module is ready to be installed in your Google Search Appliance or OneBox simulator.  
+</p>
+
+<h3>System Requirements</h3>
+The following are required when using this kit to build and run a OneBox provider:
+<ul>
+<li>A J2EE application server supporting servlets and JRE 1.4 or later, where you can deploy your OneBox</li>
+<li>JDK 1.4 or later, to rebuild the servlets and WAR file</li>
+<li><a href="http://ant.apache.org/">Ant</a> version 1.6.2 or later, to run the build script</li>
+<li><a href="http://linorg.usp.br/apache//httpcomponents/httpclient/binary/httpcomponents-client-4.1.2-bin.zip">Apache HttpComponents</a></li>
+</ul>
+
+<h3>Contents</h3>
+
+<table>
+<tr>
+<td>
+<ul>
+<li><code>readme.html</code></li><p/>
+<li><code>onebox.xml</code></li>
+<li><code>onebox.war</code></li>
+<li><code>web.xml</code></li><p/>
+<li><code>build.xml</code></li>
+<li><code>src\</code>
+	<ul>
+		<li><code>*.java</code></li>
+		<li><code>com\..\onebox\*.java</code></li>
+	</ul>
+</li>
+<li><code>doc\</code></li>
+<li><code>lib\</code></li>
+</ul>
+</td>
+<td>&nbsp;&nbsp;&nbsp;</td>
+<td valign=top>
+<table cellspacing=0 cellpadding=0>
+<tr><td> -- this file</td></tr><tr><td>&nbsp;</td></tr>
+<tr><td> -- module definition file</td></tr>
+<tr><td> -- web application archive (WAR)</td></tr>
+<tr><td> -- web application deployment descriptor</td></tr><tr><td>&nbsp;</td></tr>
+<tr><td> -- Ant build script</td></tr>
+<tr><td> -- source code directory</td></tr>
+<tr><td> -- source code for sample provider servlets</td></tr>
+<tr><td> -- source code for OneBox servlet API</td></tr>
+<tr><td> -- Javadoc for OneBox servlet API</td></tr>
+<tr><td> -- compile time library dependencies for source builds</td></tr>
+</table>
+</td>
+</tr>
+</table>
+
+
+<h3>Getting Started</h3>
+To get up and running with a OneBox module based in J2EE servlet technology, just follow these simple steps:
+<ol>
+
+<li>Deploy <code>onebox.war</code> to your J2EE application server.  For more information on how to deploy a WAR, see your application server documentation.</li>
+
+<li>Modify the <i>&lt;providerURL&gt;</i> element of the <code>onebox.xml</code> module definition file to point to your J2EE application server.</li>
+
+<li>Install the <code>onebox.xml</code> module definition file into your Google Search Appliance or OneBox simulator.  See the <a href="https://support.google.com/enterprise/doc/gsa/4x/help/serve_onebox.html">documentation</a> on how to install the module.</li>
+
+<li>You should be able run some <a href="sample_queries.html">sample queries</a> to trigger your OneBox and see directory results.</li>
+
+</ol>
+
+<h3>Customizing the behavior of your OneBox</h3>
+
+<ol>
+<li>Choose one of the sample java servlets to work from based on your OneBox's <a href="#userauth">user level access control</a> requirements.</li>
+
+<li>Modify the java servlet source to implement the customized behavior of your OneBox.</li>
+
+<li>Optionally, add <a href="#applianceauth">appliance level access control</a> by modifying <code>onebox.xml</code>, <code>web.xml</code>, and your underlying J2EE server security realm.</li>
+
+<li>Rebuild <code>onebox.war</code> using the given <code>build.xml</code> Ant script.</li>
+
+<li>Deploy <code>onebox.war</code> to your J2EE application server.  See your application server documentation on how to deploy a WAR.</li>
+
+<li>Modify the <i>&lt;security&gt;</i> element and the <i>&lt;providerURL&gt;</i> element of <code>onebox.xml</code> as appropriate for your choice of servlet and for your J2EE application server location.  Optionally, make <a href="#module">other modifications</a> to the <code>onebox.xml</code> module definition file.</li>
+
+<li>Install the <code>onebox.xml</code> module definition file into your Google Search Appliance or OneBox simulator.  See the <a href="https://support.google.com/enterprise/doc/gsa/4x/help/serve_onebox.html">documentation</a> on how to install the module.</li>
+
+<li>You should be able run a query to trigger your OneBox and see results.</li>
+
+</ol>
+
+<a name="userauth"/>
+<h3>Defining User Level Access Control</h3>
+
+<p>
+OneBox behavior can be controlled, including restriction of data access, on an individual end-user level.  This is because the identity of the end user is passed into the OneBox provider.  The form of that identity (and the trustworthiness) depends on how you configure the OneBox module for user authentication.  There are four options:
+</p>
+
+<ol>
+<li><b>No user level access control.</b>  The OneBox behavior does not at all depend on the identity of end user &mdash; it treats all users the same.  As a result, the user is never asked to identify herself and no identification information (except the browser's IP Address) is passed into the OneBox provider.</li>
+<li><b>Basic authentication.</b>  The user is challenged for a user name and password by their Google Search Appliance and that user name and password is passed into the OneBox provider.  The OneBox is responsible for authenticating the user by checking the password for accuracy.  Then the OneBox can use the given user name for customizing the results to be those the user is authorized to see.</li>
+<li><b>LDAP authentication.</b>  An LDAP directory server authenticates the user, and the user's distinguished name (DN) is then passed into the OneBox provider.  The DN is a trusted identity, so OneBox only has to use it to make authorization decisions.</li>
+<li><b>Single Sign-On (SSO) authentication.</b>  The user is challenged by an SSO system for authentication credentials.  The SSO system authenticates the user and uses a browser cookie to identify the user to other applications.  The cookie is passed into the OneBox provider where it can be used for customizing the results to be those the user is authorized to see.</li>
+</ol>
+
+<p>
+The <i>OneBox Servlet Starter Kit</i> provides four sample servlets that correspond to these four authentication options:<br><br>
+<table border=1>
+<tr bgcolor="#c6c6c6"><td><i>provider servlet class name</i></td><td><i>security authType attribute</i></td></tr>
+<tr><td>SampleNoAuthOneBoxProvider</td><td align="center">none</td></tr>
+<tr><td>SampleBasicAuthOneBoxProvider</td><td align="center">basic</td></tr>
+<tr><td>SampleLDAPAuthOneBoxProvider</td><td align="center">ldap</td></tr>
+<tr><td>SampleSSOAuthOneBoxProvider</td><td align="center">sso</td></tr>
+</table>
+</p>
+
+<p>
+All you have to do is choose the sample servlet that best fits your environment and update the <code>onebox.xml</code> <i>&lt;providerURL&gt;</i> element's value and <i>&lt;security&gt;</i> element's <i>authType</i> attribute.
+
+</p>
+
+<a name="applianceauth"/>
+<h3>Defining Appliance Level Access Control</h3>
+
+<p>
+The actual HTTP calls to your OneBox provider come not directly from the end user but from the appliance.  This is because, in response to a user's search query, the appliance is aggregating the results of your OneBox with natural search results and potentially with results from other OneBoxes before sending them all back to the end user.  So you might want your OneBox provider to authenticate the appliance or to make authorization decisions based on which appliance it is.
+</p>
+
+<p>
+To do this configure <code>onebox.xml</code> to send a user name and password associated with the appliance to the OneBox provider using the HTTP Basic authentication protocol.  Specifically, the credentials will be sent in the <code>Authentication</code> header of the request when the <code>onebox.xml</code> <i>&lt;security&gt;</i> element's <i>authType</i> attribute is <i>basic</i>, <i>ldap</i>, or <i>sso</i> and the <i>&lt;GSA_username&gt;</i> and <i>&lt;GSA_password&gt;</i> elements are present with non-empty values.  In this case you should enter placeholder values for GSA_username and GSA_password and let the Google Search Appliance administrator installing your <code>onebox.xml</code> replace the values with specific ones for his Google Search Appliance.  He can do this in the Admin Console after installation.
+</p>
+
+<p>
+While you <i>could</i> authenticate the appliance's credentials in your provider, typically J2EE servlet applications use the application server's built-in realm-based authentication model and role-based authorization model for this type of access control.  You define in the <code>web.xml</code> descriptor which URLs you want to protect and which roles can access them.  The provided <code>web.xml</code> has <i>&lt;security-constraint&gt;</i>, <i>&lt;login-config&gt;</i>, and <i>&lt;security-role&gt;</i> elements that can be uncommented out for this purpose.  This will enable the application server to receive the appliance's credentials and pass them on to a security realm which is configured for the J2EE server.  The realm defines a mechanism to authenticate the user.  Typical realms are based on an LDAP directory, relational database, or XML file.  You'll need to make sure that the expected Google Search Appliance user names and passwords are accounted for in the active security realm for your J2EE server.
+</p>
+
+<a name="module"/>
+<h3>Module Definition File</h3>
+
+<p>
+We've already discussed the <i>&lt;security&gt;</i> element of the <code>onebox.xml</code> module definition file for defining user level and appliance-level access control for your OneBox.  We've also discussed the <i>&lt;providerURL&gt;</i> element for defining the location of your OneBox provider.  There are other things you can control such as when your module gets triggered or whether to suppress certain parameters from being sent to your provider.  The details of those semantics are in Google's <a href="http://code.google.com/enterprise/documentation/oneboxguide.html#oneboxmoduledefinitionxml">OneBox documentation</a>.  Finally, in the 
+<i>&lt;resultsTemplate&gt;</i> element, the <code>onebox.xml</code> file includes the XSL code that defines what your OneBox results will look like to the end-user.  The given XSL provides a starting point that will display the sample results.  See the <a href="http://code.google.com/enterprise/documentation/oneboxguide.html#providerresultsschema">XML results schema</a> to view the data elements you have to work with when customizing the XSL.
+</p>
+
+&nbsp;
+
+</body>
+</html>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+  Copyright 2006 The Apache Software Foundation
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+    version="2.4">
+
+  <display-name>OneBox Provider</display-name>
+  <description>
+     This application serves OneBox provider servlets
+  </description>
+  
+    <servlet>
+    	<servlet-name>SponsoredResults</servlet-name>
+    	<servlet-class>SponsoredResults</servlet-class>
+    	<init-param>
+			<param-name>gsaHostName</param-name>
+			<param-value>devgsa2.mcplusa.com</param-value> <!-- replace with your GSA IP or Host Name -->
+		</init-param>
+		<init-param>
+			<param-name>site</param-name>
+			<param-value>dice_collection</param-value> <!-- replace with your GSA IP or Host Name -->
+		</init-param>
+		<init-param>
+			<param-name>client</param-name>
+			<param-value>dice_sponsor_frontend</param-value> <!-- replace with your GSA IP or Host Name -->
+		</init-param>
+    </servlet>
+
+    <servlet>
+        <servlet-name>SampleNoAuthOneBoxProvider</servlet-name>
+        <servlet-class>SampleNoAuthOneBoxProvider</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SampleBasicAuthOneBoxProvider</servlet-name>
+        <servlet-class>SampleBasicAuthOneBoxProvider</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SampleLDAPAuthOneBoxProvider</servlet-name>
+        <servlet-class>SampleLDAPAuthOneBoxProvider</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SampleSSOAuthOneBoxProvider</servlet-name>
+        <servlet-class>SampleSSOAuthOneBoxProvider</servlet-class>
+    </servlet>
+
+	<servlet-mapping>
+        <servlet-name>SponsoredResults</servlet-name>
+        <url-pattern>/SponsoredResults</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SampleNoAuthOneBoxProvider</servlet-name>
+        <url-pattern>/SampleNoAuthOneBoxProvider</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SampleBasicAuthOneBoxProvider</servlet-name>
+        <url-pattern>/SampleBasicAuthOneBoxProvider</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SampleLDAPAuthOneBoxProvider</servlet-name>
+        <url-pattern>/SampleLDAPAuthOneBoxProvider</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SampleSSOAuthOneBoxProvider</servlet-name>
+        <url-pattern>/SampleSSOAuthOneBoxProvider</url-pattern>
+    </servlet-mapping>
+
+
+  <!-- Define a Security Constraint on this Application -->
+<!--
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>OneBox Provider</web-resource-name>
+      <url-pattern>/SampleBasicAuthOneBoxProvider</url-pattern>
+      <url-pattern>/SampleLDAPAuthOneBoxProvider</url-pattern>
+      <url-pattern>/SampleSSOAuthOneBoxProvider</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+       <role-name>oneboxclient</role-name>
+    </auth-constraint>
+  </security-constraint>
+-->
+
+  <!-- Define the Login Configuration for this Application -->
+<!--
+  <login-config>
+    <auth-method>BASIC</auth-method>
+    <realm-name>OneBox Provider</realm-name>
+  </login-config>
+-->
+
+  <!-- Security roles referenced by this web application -->
+<!--
+  <security-role>
+    <description>
+      The role that is required to access the OneBox provider
+    </description>
+    <role-name>oneboxclient</role-name>
+  </security-role>
+-->
+
+  <error-page>
+    <error-code>401</error-code>
+    <location>/401.xml</location>
+  </error-page>
+
+</web-app>

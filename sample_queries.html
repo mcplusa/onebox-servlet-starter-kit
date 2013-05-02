@@ -1,0 +1,70 @@
+<html>
+<head>
+<title>Sample Directory OneBox Module Usage</title>
+</head>
+<body>
+<h3>Sample Directory OneBox Module Usage</h3>
+<p>
+Check out <a href="src/EmployeeDirectory.java">EmployeeDirectory.java</a> for the entire directory 
+of people that you can query for in the sample organization.
+</p>
+<p>
+If you are running the default sample OneBox provider (<a href="src/SampleNoAuthOneBoxProvider.java">SampleNoAuthOneBoxProvider.java</a>) which requires no authorization, then you should be able to query the directory and get detailed contact information for anyone in the organization.  Here is a sample search to exercise your OneBox.
+</p>
+<p>
+<table border="1">
+<tr bgcolor="#c6c6c6">
+<th><i>Search term</i></th>
+<th><i>Expect to see</i></th>
+</tr>
+<tr>
+<td nowrap="true"><b>directory Brown</b></td>
+<td>This will query the directory and return detailed contact information for all three people in the organization whose last name is Brown.</td>
+</tr>
+</table>
+</p>
+<p>&nbsp;</p>
+<p>
+If you are running one of the sample secure OneBox providers (<a href="src/SampleBasicAuthOneBoxProvider.java">SampleBasicAuthOneBoxProvider.java</a>,
+<a href="src/SampleLDAPAuthOneBoxProvider.java">SampleLDAPAuthOneBoxProvider.java</a>, or 
+<a href="src/SampleSSOAuthOneBoxProvider.java">SampleSSOAuthOneBoxProvider.java</a>) then see the provider source file for the user ids, roles, and passwords (if applicable) for the full set of users that you can authenticate as.
+</p>
+<p>
+Here are some sample searches to exercise the SampleBasicAuthOneBoxProvider (or the other secure providers) and see the effect of user level access control in OneBox.  Assuming you are using a Google Search Appliance as your OneBox client and you are using the appliance's default user interface, you'll need to select "public and secure content" before running each search.  You'll also need to clear your browser cache (or restart your browser) in between search attempts to retain the ability to log in as a different user on each attempt.
+</p>
+<p>
+<table border="1">
+<tr bgcolor="#c6c6c6">
+<th><i>Search term</i></th>
+<th><i>Log in as</i></th>
+<th><i>Expect to see</i></th>
+</tr>
+<tr>
+<td nowrap="true"><b>directory Brown</b></td>
+<td>wbrown/wbrown</td>
+<td>Since William Brown is a contractor, he is only authorized to see the contact information on file for himself despite the existence of other Browns in his department.</td>
+</tr>
+<tr>
+<td nowrap="true"><b>directory Brown</b></td>
+<td>jsmith/jsmith</td>
+<td>Since James Smith is an employee in the Marketing department, he is authorized to see some basic directory information on all of the people in his department, including both Browns.</td>
+</tr>
+<tr>
+<td nowrap="true"><b>directory Brown</b></td>
+<td>sbrown/sbrown</td>
+<td>Since Susan Brown is an employee in the Marketing department, she is authorized to see the detailed contact information on file for herself and is able to see some basic directory information on the other people in her department, including William Brown.</td>
+</tr>
+<tr>
+<td nowrap="true"><b>directory Brown</b></td>
+<td>rmiller/rmiller</td>
+<td>Since Richard Miller is a manager in the Marketing department, he is authorized to see the detailed contact information on file for all of the people in his department, including both Browns.</td>
+</tr>
+<tr>
+<td nowrap="true"><b>directory Brown</b></td>
+<td>mhernandez/mhernandez</td>
+<td>Since Margaret Hernandez is a system admin, she is authorized to see the detailed contact information on file for all of the people in all of the departments, including all three Browns.</td>
+</tr>
+</table>
+</p>
+</body>
+</html>
